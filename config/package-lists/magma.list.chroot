@@ -1,6 +1,8 @@
 live-task-kde
 network-manager
 plasma-nm
+sddm
+sddm-theme-breeze
 firefox-esr
 sudo
 git

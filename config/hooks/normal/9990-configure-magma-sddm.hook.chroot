@@ -1,0 +1,63 @@
+#!/bin/sh
+set -eu
+
+THEME_DIR="/usr/share/sddm/themes/magma-sddm"
+BREEZE_DIR="/usr/share/sddm/themes/breeze"
+LOGO_URL="https://raw.githubusercontent.com/Erz05506/Magma-Linux/main/branding/logos/magma-flame.png"
+
+if [ ! -d "$BREEZE_DIR" ]; then
+    echo "Magma SDDM: Breeze theme is missing." >&2
+    exit 1
+fi
+
+rm -rf "$THEME_DIR"
+install -d "$THEME_DIR"
+cp -a "$BREEZE_DIR/." "$THEME_DIR/"
+install -d "$THEME_DIR/assets"
+
+if command -v curl >/dev/null 2>&1; then
+    curl --fail --location --silent --show-error --retry 3 "$LOGO_URL" -o "$THEME_DIR/assets/magma-flame.png.tmp" || true
+    if [ -s "$THEME_DIR/assets/magma-flame.png.tmp" ]; then
+        mv "$THEME_DIR/assets/magma-flame.png.tmp" "$THEME_DIR/assets/magma-flame.png"
+    else
+        rm -f "$THEME_DIR/assets/magma-flame.png.tmp"
+    fi
+fi
+
+if [ -s "$THEME_DIR/assets/magma-flame.png" ]; then
+    SHOW_LOGO="shown"
+else
+    SHOW_LOGO="hidden"
+fi
+
+cat > "$THEME_DIR/theme.conf" <<EOF
+[General]
+showlogo=$SHOW_LOGO
+showClock=true
+logo=$THEME_DIR/assets/magma-flame.png
+type=color
+color=#0a0a0c
+fontSize=10
+background=
+needsFullUserModel=false
+EOF
+
+cat > "$THEME_DIR/metadata.desktop" <<'EOF'
+[SddmGreeterTheme]
+Name=Magma Linux
+Description=Magma Linux Login Screen
+Author=Magma Studios
+Copyright=(c) 2026 Magma Studios
+License=GPL-3.0-or-later
+Type=sddm-theme
+Version=1.0
+Website=https://magmalauncher.space
+MainScript=Main.qml
+ConfigFile=theme.conf
+TranslationsDirectory=translations
+Theme-Id=magma-sddm
+Theme-API=2.0
+QtVersion=6
+EOF
+
+chmod 644 "$THEME_DIR/theme.conf" "$THEME_DIR/metadata.desktop"
