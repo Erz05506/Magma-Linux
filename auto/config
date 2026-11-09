@@ -1,0 +1,17 @@
+#!/bin/sh
+
+lb config noauto \
+    --mode debian \
+    --distribution trixie \
+    --architectures amd64 \
+    --archive-areas "main contrib non-free-firmware" \
+    --binary-image iso-hybrid \
+    --bootloaders "syslinux grub-efi" \
+    --debian-installer live \
+    --firmware-binary true \
+    --firmware-chroot true \
+    --iso-application "Magma Linux" \
+    --iso-publisher "Magma Studios" \
+    --iso-volume "MAGMA_LINUX" \
+    --bootappend-live "boot=live components username=magma hostname=magma-linux locales=en_US.UTF-8,ru_RU.UTF-8 keyboard-layouts=us,ru" \
+    "${@}"

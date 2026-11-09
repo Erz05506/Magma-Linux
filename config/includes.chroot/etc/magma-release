@@ -1,0 +1,9 @@
+NAME="Magma Linux"
+VERSION="0.1 Alpha"
+ID=magma
+ID_LIKE=debian
+PRETTY_NAME="Magma Linux 0.1 Alpha"
+VERSION_CODENAME=trixie
+BASE="Debian GNU/Linux 13"
+ARCHITECTURE="amd64"
+DEVELOPER="Magma Studios"
