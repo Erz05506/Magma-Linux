@@ -1,9 +1,9 @@
 [General]
 ColorScheme=MagmaDark
 Name=Magma Linux
-accentColor=255,122,26
-font=Noto Sans,10,-1,5,50,0,0,0,0,0
-fixed=Hack,10,-1,5,50,0,0,0,0,0
+AccentColor=255,122,26
+font=Inter,10,-1,5,50,0,0,0,0,0
+fixed=Monospace,10,-1,5,50,0,0,0,0,0
 
 [Icons]
 Theme=Papirus-Dark
