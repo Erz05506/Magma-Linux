@@ -375,8 +375,8 @@ Rectangle {
                 cursorShape: Qt.PointingHandCursor
                 onClicked: sddm.suspend()
             }
-        }
             Behavior on color { ColorAnimation { duration: 140 } }
+        }
 
         Rectangle {
             width: 44
@@ -415,8 +415,8 @@ Rectangle {
                 cursorShape: Qt.PointingHandCursor
                 onClicked: sddm.powerOff()
             }
-        }
             Behavior on color { ColorAnimation { duration: 140 } }
+        }
 
         Rectangle {
             width: 44
@@ -457,8 +457,8 @@ Rectangle {
                 cursorShape: Qt.PointingHandCursor
                 onClicked: sddm.reboot()
             }
-        }
             Behavior on color { ColorAnimation { duration: 140 } }
+        }
     }
 
     Text {
