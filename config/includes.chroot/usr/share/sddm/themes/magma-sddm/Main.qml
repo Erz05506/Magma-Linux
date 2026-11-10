@@ -105,7 +105,7 @@ Rectangle {
                 anchors.centerIn: parent
                 width: 66
                 height: 66
-                source: Qt.resolvedUrl("assets/magma-flame.png")
+                source: Qt.resolvedUrl("assets/magma-simple.png")
                 fillMode: Image.PreserveAspectFit
                 smooth: true
             }
@@ -125,30 +125,72 @@ Rectangle {
 
         Item {
             width: parent.width
-            height: 24
+            height: 48
 
-            Text {
+            Rectangle {
+                id: usersButton
+                width: 38
+                height: 38
+                radius: 19
                 anchors.centerIn: parent
-                text: "List users  ▾"
-                color: "#aeb5c0"
-                font.pixelSize: 12
-            }
+                color: usersButtonMouse.containsMouse || root.userListVisible ? "#ff7a1a" : "#20242c"
+                border.width: 1
+                border.color: usersButtonMouse.containsMouse || root.userListVisible ? "#ff9a4d" : "#414957"
 
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                onClicked: root.userListVisible = !root.userListVisible
+                Canvas {
+                    anchors.centerIn: parent
+                    width: 21
+                    height: 21
+                    onPaint: {
+                        var c = getContext("2d")
+                        c.reset()
+                        c.strokeStyle = usersButtonMouse.containsMouse || root.userListVisible ? "#17191e" : "#e2e6ec"
+                        c.lineWidth = 1.7
+                        c.lineCap = "round"
+                        c.lineJoin = "round"
+                        c.beginPath()
+                        c.arc(8, 7, 3, 0, Math.PI * 2)
+                        c.stroke()
+                        c.beginPath()
+                        c.arc(15.5, 8, 2.3, 0, Math.PI * 2)
+                        c.stroke()
+                        c.beginPath()
+                        c.moveTo(2.5, 18)
+                        c.quadraticCurveTo(3, 12, 8, 12)
+                        c.quadraticCurveTo(13, 12, 13.5, 18)
+                        c.stroke()
+                        c.beginPath()
+                        c.moveTo(13, 13)
+                        c.quadraticCurveTo(18.5, 12, 19, 18)
+                        c.stroke()
+                    }
+                }
+
+                MouseArea {
+                    id: usersButtonMouse
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: root.userListVisible = !root.userListVisible
+                }
+
+                Behavior on color { ColorAnimation { duration: 150 } }
+                Behavior on border.color { ColorAnimation { duration: 150 } }
             }
         }
 
         Rectangle {
             width: parent.width
-            height: root.userListVisible ? Math.min(150, userModel.count * 36) : 0
-            visible: root.userListVisible
+            height: root.userListVisible ? Math.min(150, Math.max(36, userModel.count * 36)) : 0
+            visible: height > 0
+            opacity: root.userListVisible ? 1 : 0
             color: "#171c24"
+            clip: true
+
+            Behavior on height { NumberAnimation { duration: 220; easing.type: Easing.OutCubic } }
+            Behavior on opacity { NumberAnimation { duration: 160 } }
             radius: 8
             border.color: "#343c48"
-            clip: true
 
             ListView {
                 anchors.fill: parent
@@ -312,10 +354,10 @@ Rectangle {
             width: 44
             height: 44
             radius: 22
-            color: sleepMouse.containsMouse ? "#29313c" : "#171c24"
+            color: sleepMouse.containsMouse ? "#ff7a1a" : "#171c24"
             border.width: 1
             border.color: "#3a4655"
-            opacity: sddm.canSuspend ? 1.0 : 0.4
+            opacity: 1.0
 
             Text {
                 anchors.centerIn: parent
@@ -328,7 +370,7 @@ Rectangle {
             MouseArea {
                 id: sleepMouse
                 anchors.fill: parent
-                enabled: sddm.canSuspend
+                enabled: true
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
                 onClicked: sddm.suspend()
@@ -339,10 +381,10 @@ Rectangle {
             width: 44
             height: 44
             radius: 22
-            color: shutdownMouse.containsMouse ? "#29313c" : "#171c24"
+            color: shutdownMouse.containsMouse ? "#ff7a1a" : "#171c24"
             border.width: 1
             border.color: "#3a4655"
-            opacity: sddm.canPowerOff ? 1.0 : 0.4
+            opacity: 1.0
 
             Canvas {
                 anchors.centerIn: parent
@@ -367,7 +409,7 @@ Rectangle {
             MouseArea {
                 id: shutdownMouse
                 anchors.fill: parent
-                enabled: sddm.canPowerOff
+                enabled: true
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
                 onClicked: sddm.powerOff()
@@ -378,7 +420,7 @@ Rectangle {
             width: 44
             height: 44
             radius: 22
-            color: rebootMouse.containsMouse ? "#29313c" : "#171c24"
+            color: rebootMouse.containsMouse ? "#ff7a1a" : "#171c24"
             border.width: 1
             border.color: "#3a4655"
 
@@ -408,7 +450,7 @@ Rectangle {
             MouseArea {
                 id: rebootMouse
                 anchors.fill: parent
-                enabled: sddm.canReboot
+                enabled: true
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
                 onClicked: sddm.reboot()
