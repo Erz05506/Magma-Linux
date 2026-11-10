@@ -1,0 +1,14 @@
+[SddmGreeterTheme]
+Name=Magma Linux
+Description=Magma Linux login screen
+Author=Magma Studios
+Copyright=(c) 2026 Magma Studios
+License=GPL-3.0-or-later
+Type=sddm-theme
+Version=1.0
+Website=https://github.com/Erz05506/Magma-Linux
+MainScript=Main.qml
+ConfigFile=theme.conf
+Theme-Id=magma-sddm
+Theme-API=2.0
+QtVersion=6
