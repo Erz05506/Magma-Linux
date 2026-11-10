@@ -2,6 +2,10 @@ live-task-kde
 network-manager
 plasma-nm
 sddm
+papirus-icon-theme
+fonts-inter
+fonts-noto
+breeze-gtk-theme
 firefox-esr
 sudo
 git
