@@ -7,13 +7,11 @@ Rectangle {
     height: 720
     color: "#090a0d"
 
-    property int sessionIndex: sessionBox.index
+    property int sessionIndex: sessionModel.lastIndex >= 0 ? sessionModel.lastIndex : 0
     property string statusMessage: ""
     property color accent: "#ff7a1a"
     property string clockText: Qt.formatDateTime(new Date(), "HH:mm")
     property string dateText: Qt.formatDateTime(new Date(), "dddd, d MMMM")
-
-    TextConstants { id: textConstants }
 
     Connections {
         target: sddm
@@ -33,7 +31,6 @@ Rectangle {
         }
     }
 
-    // Quiet, wallpaper-like background: no app-style login card.
     Rectangle {
         anchors.fill: parent
         gradient: Gradient {
@@ -63,7 +60,6 @@ Rectangle {
         y: root.height * 0.48
     }
 
-    // Time and date are part of the desktop environment, not a login panel.
     Column {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
@@ -84,61 +80,63 @@ Rectangle {
             text: root.dateText
             color: "#9ba2ad"
             font.pixelSize: 15
-            font.weight: Font.Normal
         }
     }
 
     Column {
         id: loginContent
-        width: Math.min(340, root.width * 0.78)
+        width: Math.min(360, root.width * 0.8)
         anchors.centerIn: parent
         anchors.verticalCenterOffset: root.height * 0.055
         spacing: 0
 
         Rectangle {
-            width: 76
-            height: 76
-            radius: 38
+            width: 82
+            height: 82
+            radius: 41
             color: "#202630"
             border.width: 1
-            border.color: "#343c48"
+            border.color: "#3a4655"
             anchors.horizontalCenter: parent.horizontalCenter
 
             Image {
                 anchors.centerIn: parent
-                width: 43
-                height: 43
-                source: Qt.resolvedUrl("assets/magma-flame.png")
+                width: 58
+                height: 58
+                source: Qt.resolvedUrl("assets/magma-flame.svg")
                 fillMode: Image.PreserveAspectFit
+                smooth: true
             }
         }
 
-        Text {
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.topMargin: 17
-            text: userModel.lastUser.length > 0 ? userModel.lastUser : "Welcome"
-            color: "#f1f2f4"
-            font.pixelSize: 23
-            font.weight: Font.Medium
-        }
+        Item { width: 1; height: 15 }
 
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.topMargin: 7
-            text: "Enter your password to unlock"
+            text: userModel.lastUser.length > 0 ? userModel.lastUser : "Welcome"
+            color: "#f1f2f4"
+            font.pixelSize: 24
+            font.weight: Font.Medium
+        }
+
+        Item { width: 1; height: 7 }
+
+        Text {
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: "Enter your password"
             color: "#929aa6"
             font.pixelSize: 13
         }
 
-        Item { width: 1; height: 27 }
+        Item { width: 1; height: 26 }
 
         Rectangle {
             id: passwordField
             width: parent.width
-            height: 52
-            radius: 8
+            height: 54
+            radius: 9
             color: "#171c24"
-            border.width: passwordInput.activeFocus ? 1 : 1
+            border.width: 1
             border.color: passwordInput.activeFocus ? accent : "#343c48"
 
             MouseArea {
@@ -150,9 +148,12 @@ Rectangle {
 
             TextInput {
                 id: passwordInput
-                anchors.fill: parent
+                anchors.left: parent.left
+                anchors.right: submitArea.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
                 anchors.leftMargin: 17
-                anchors.rightMargin: 17
+                anchors.rightMargin: 8
                 verticalAlignment: TextInput.AlignVCenter
                 color: "#f1f2f4"
                 selectionColor: accent
@@ -177,66 +178,45 @@ Rectangle {
                 font.pixelSize: 14
                 visible: passwordInput.text.length === 0
             }
+
+            Rectangle {
+                id: submitArea
+                width: 42
+                height: 42
+                radius: 8
+                anchors.right: parent.right
+                anchors.rightMargin: 6
+                anchors.verticalCenter: parent.verticalCenter
+                color: submitMouse.containsMouse ? "#3a2b20" : "transparent"
+
+                Text {
+                    anchors.centerIn: parent
+                    text: "→"
+                    color: "#ffad66"
+                    font.pixelSize: 27
+                    font.weight: Font.Medium
+                }
+
+                MouseArea {
+                    id: submitMouse
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: sddm.login(userModel.lastUser, passwordInput.text, sessionIndex)
+                }
+            }
         }
+
+        Item { width: 1; height: 12 }
 
         Text {
             id: statusText
             width: parent.width
-            anchors.topMargin: 12
             text: root.statusMessage
             color: "#ff9a62"
             font.pixelSize: 12
             horizontalAlignment: Text.AlignHCenter
             visible: text.length > 0
-        }
-
-        Rectangle {
-            id: loginButton
-            width: parent.width
-            height: 46
-            radius: 8
-            color: loginMouse.containsMouse ? "#ff8b35" : accent
-            anchors.topMargin: 18
-
-            Text {
-                anchors.centerIn: parent
-                text: "Sign in"
-                color: "#111318"
-                font.pixelSize: 14
-                font.weight: Font.DemiBold
-            }
-
-            MouseArea {
-                id: loginMouse
-                anchors.fill: parent
-                hoverEnabled: true
-                cursorShape: Qt.PointingHandCursor
-                onClicked: sddm.login(userModel.lastUser, passwordInput.text, sessionIndex)
-            }
-        }
-
-        Item { width: 1; height: 24 }
-
-        Row {
-            anchors.horizontalCenter: parent.horizontalCenter
-            spacing: 12
-
-            ComboBox {
-                id: sessionBox
-                width: 170
-                height: 34
-                model: sessionModel
-                index: sessionModel.lastIndex
-                font.pixelSize: 11
-            }
-
-            LayoutBox {
-                id: layoutBox
-                width: 82
-                height: 34
-                visible: keyboard.enabled && keyboard.layouts.length > 1
-                font.pixelSize: 11
-            }
         }
     }
 
@@ -248,18 +228,31 @@ Rectangle {
         spacing: 10
 
         Rectangle {
-            width: 42
-            height: 42
-            radius: 21
+            width: 44
+            height: 44
+            radius: 22
             color: shutdownMouse.containsMouse ? "#29313c" : "#171c24"
             border.width: 1
-            border.color: "#343c48"
+            border.color: "#3a4655"
 
-            Text {
+            Canvas {
                 anchors.centerIn: parent
-                text: "⏻"
-                color: "#d9dde3"
-                font.pixelSize: 19
+                width: 20
+                height: 20
+                onPaint: {
+                    var c = getContext("2d")
+                    c.reset()
+                    c.strokeStyle = "#d9dde3"
+                    c.lineWidth = 1.8
+                    c.lineCap = "round"
+                    c.beginPath()
+                    c.arc(10, 11, 7, 0.25 * Math.PI, 2.75 * Math.PI, false)
+                    c.stroke()
+                    c.beginPath()
+                    c.moveTo(10, 1)
+                    c.lineTo(10, 10)
+                    c.stroke()
+                }
             }
 
             MouseArea {
@@ -272,18 +265,34 @@ Rectangle {
         }
 
         Rectangle {
-            width: 42
-            height: 42
-            radius: 21
+            width: 44
+            height: 44
+            radius: 22
             color: rebootMouse.containsMouse ? "#29313c" : "#171c24"
             border.width: 1
-            border.color: "#343c48"
+            border.color: "#3a4655"
 
-            Text {
+            Canvas {
                 anchors.centerIn: parent
-                text: "↻"
-                color: "#d9dde3"
-                font.pixelSize: 20
+                width: 20
+                height: 20
+                onPaint: {
+                    var c = getContext("2d")
+                    c.reset()
+                    c.strokeStyle = "#d9dde3"
+                    c.fillStyle = "#d9dde3"
+                    c.lineWidth = 1.8
+                    c.lineCap = "round"
+                    c.lineJoin = "round"
+                    c.beginPath()
+                    c.arc(10, 10, 7, 0.15 * Math.PI, 1.85 * Math.PI, false)
+                    c.stroke()
+                    c.beginPath()
+                    c.moveTo(15.5, 3.5)
+                    c.lineTo(16, 8)
+                    c.lineTo(11.5, 7.5)
+                    c.stroke()
+                }
             }
 
             MouseArea {
