@@ -94,15 +94,15 @@ Rectangle {
             width: 82
             height: 82
             radius: 41
-            color: "#202630"
+            color: "#17191e"
             border.width: 1
-            border.color: "#3a4655"
+            border.color: "#a84d1d"
             anchors.horizontalCenter: parent.horizontalCenter
 
             Image {
                 anchors.centerIn: parent
-                width: 58
-                height: 58
+                width: 66
+                height: 66
                 source: Qt.resolvedUrl("assets/magma-flame.svg")
                 fillMode: Image.PreserveAspectFit
                 smooth: true
@@ -135,9 +135,9 @@ Rectangle {
             width: parent.width
             height: 54
             radius: 9
-            color: "#171c24"
+            color: "#17191e"
             border.width: 1
-            border.color: passwordInput.activeFocus ? accent : "#343c48"
+            border.color: passwordInput.activeFocus ? accent : "#34343a"
 
             MouseArea {
                 anchors.fill: parent
@@ -181,20 +181,39 @@ Rectangle {
 
             Rectangle {
                 id: submitArea
-                width: 42
-                height: 42
-                radius: 8
+                width: 40
+                height: 40
+                radius: 20
                 anchors.right: parent.right
                 anchors.rightMargin: 6
                 anchors.verticalCenter: parent.verticalCenter
-                color: submitMouse.containsMouse ? "#3a2b20" : "transparent"
+                color: submitMouse.containsMouse ? "#ff7a1a" : "#303139"
 
-                Text {
+                Canvas {
                     anchors.centerIn: parent
-                    text: "→"
-                    color: "#ffad66"
-                    font.pixelSize: 27
-                    font.weight: Font.Medium
+                    width: 22
+                    height: 22
+                    onPaint: {
+                        var ctx = getContext("2d")
+                        ctx.reset()
+                        ctx.strokeStyle = submitMouse.containsMouse ? "#17191e" : "#f1f2f4"
+                        ctx.lineWidth = 1.9
+                        ctx.lineCap = "round"
+                        ctx.lineJoin = "round"
+                        ctx.beginPath()
+                        ctx.moveTo(3, 11)
+                        ctx.lineTo(18, 11)
+                        ctx.moveTo(12, 5)
+                        ctx.lineTo(18, 11)
+                        ctx.lineTo(12, 17)
+                        ctx.stroke()
+                        ctx.beginPath()
+                        ctx.moveTo(14, 3)
+                        ctx.lineTo(19, 3)
+                        ctx.lineTo(19, 19)
+                        ctx.lineTo(14, 19)
+                        ctx.stroke()
+                    }
                 }
 
                 MouseArea {
