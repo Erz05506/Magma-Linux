@@ -103,7 +103,7 @@ Rectangle {
                 anchors.centerIn: parent
                 width: 66
                 height: 66
-                source: Qt.resolvedUrl("assets/magma-flame.svg")
+                source: Qt.resolvedUrl("assets/magma-flame.png")
                 fillMode: Image.PreserveAspectFit
                 smooth: true
             }
