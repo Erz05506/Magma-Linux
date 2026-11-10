@@ -342,6 +342,7 @@ Rectangle {
             color: shutdownMouse.containsMouse ? "#29313c" : "#171c24"
             border.width: 1
             border.color: "#3a4655"
+            opacity: sddm.canPowerOff ? 1.0 : 0.4
 
             Canvas {
                 anchors.centerIn: parent
@@ -366,6 +367,7 @@ Rectangle {
             MouseArea {
                 id: shutdownMouse
                 anchors.fill: parent
+                enabled: sddm.canPowerOff
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
                 onClicked: sddm.powerOff()
@@ -406,6 +408,7 @@ Rectangle {
             MouseArea {
                 id: rebootMouse
                 anchors.fill: parent
+                enabled: sddm.canReboot
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
                 onClicked: sddm.reboot()
