@@ -133,9 +133,9 @@ Rectangle {
                 height: 38
                 radius: 19
                 anchors.centerIn: parent
-                color: usersButtonMouse.containsMouse || root.userListVisible ? "#d9dde3" : "#20242c"
+                color: usersButtonMouse.containsMouse || root.userListVisible ? "#292e37" : "#20242c"
                 border.width: 1
-                border.color: usersButtonMouse.containsMouse || root.userListVisible ? "#eef0f3" : "#414957"
+                border.color: usersButtonMouse.containsMouse || root.userListVisible ? "#596372" : "#414957"
 
                 Canvas {
                     anchors.centerIn: parent
@@ -291,7 +291,7 @@ Rectangle {
                 anchors.right: parent.right
                 anchors.rightMargin: 6
                 anchors.verticalCenter: parent.verticalCenter
-                color: submitMouse.containsMouse ? "#d9dde3" : "#303139"
+                color: submitMouse.containsMouse ? "#292e37" : "#303139"
 
                 Canvas {
                     anchors.centerIn: parent
@@ -354,7 +354,7 @@ Rectangle {
             width: 44
             height: 44
             radius: 22
-            color: sleepMouse.containsMouse ? "#d9dde3" : "#171c24"
+            color: sleepMouse.containsMouse ? "#292e37" : "#171c24"
             border.width: 1
             border.color: "#3a4655"
             opacity: 1.0
@@ -376,12 +376,13 @@ Rectangle {
                 onClicked: sddm.suspend()
             }
         }
+            Behavior on color { ColorAnimation { duration: 140 } }
 
         Rectangle {
             width: 44
             height: 44
             radius: 22
-            color: shutdownMouse.containsMouse ? "#d9dde3" : "#171c24"
+            color: shutdownMouse.containsMouse ? "#292e37" : "#171c24"
             border.width: 1
             border.color: "#3a4655"
             opacity: 1.0
@@ -415,12 +416,13 @@ Rectangle {
                 onClicked: sddm.powerOff()
             }
         }
+            Behavior on color { ColorAnimation { duration: 140 } }
 
         Rectangle {
             width: 44
             height: 44
             radius: 22
-            color: rebootMouse.containsMouse ? "#d9dde3" : "#171c24"
+            color: rebootMouse.containsMouse ? "#292e37" : "#171c24"
             border.width: 1
             border.color: "#3a4655"
 
@@ -456,6 +458,7 @@ Rectangle {
                 onClicked: sddm.reboot()
             }
         }
+            Behavior on color { ColorAnimation { duration: 140 } }
     }
 
     Text {
