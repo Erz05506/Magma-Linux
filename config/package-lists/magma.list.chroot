@@ -2,6 +2,7 @@ live-task-kde
 network-manager
 plasma-nm
 sddm
+qt6-svg-plugins
 papirus-icon-theme
 fonts-inter
 fonts-noto
