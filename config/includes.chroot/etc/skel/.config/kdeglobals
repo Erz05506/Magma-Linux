@@ -1,0 +1,18 @@
+[General]
+ColorScheme=MagmaDark
+Name=Magma Linux
+accentColor=255,122,26
+font=Noto Sans,10,-1,5,50,0,0,0,0,0
+fixed=Hack,10,-1,5,50,0,0,0,0,0
+
+[Icons]
+Theme=Papirus-Dark
+
+[KDE]
+SingleClick=false
+
+[WM]
+activeBackground=19,19,22
+activeForeground=245,245,247
+inactiveBackground=28,28,33
+inactiveForeground=165,165,173
