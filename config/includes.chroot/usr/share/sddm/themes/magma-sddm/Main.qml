@@ -10,6 +10,7 @@ Rectangle {
     property int sessionIndex: sessionBox.index
     property string statusMessage: ""
     property color accent: "#ff7a1a"
+    property string clockText: Qt.formatDateTime(new Date(), "ddd, dd MMM  •  HH:mm")
 
     TextConstants { id: textConstants }
 
@@ -258,7 +259,7 @@ Rectangle {
         }
 
         Text {
-            text: Qt.formatDateTime(new Date(), "ddd, dd MMM  •  HH:mm")
+            text: root.clockText
             color: "#777780"
             font.pixelSize: 10
             anchors.horizontalCenter: parent.horizontalCenter
@@ -318,6 +319,13 @@ Rectangle {
                 onClicked: sddm.reboot()
             }
         }
+    }
+
+    Timer {
+        interval: 1000
+        running: true
+        repeat: true
+        onTriggered: root.clockText = Qt.formatDateTime(new Date(), "ddd, dd MMM  •  HH:mm")
     }
 
     Component.onCompleted: {
