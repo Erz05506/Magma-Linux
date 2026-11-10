@@ -5,12 +5,13 @@ Rectangle {
     id: root
     width: 1280
     height: 720
-    color: "#0a0a0c"
+    color: "#090a0d"
 
     property int sessionIndex: sessionBox.index
     property string statusMessage: ""
     property color accent: "#ff7a1a"
-    property string clockText: Qt.formatDateTime(new Date(), "ddd, dd MMM  •  HH:mm")
+    property string clockText: Qt.formatDateTime(new Date(), "HH:mm")
+    property string dateText: Qt.formatDateTime(new Date(), "dddd, d MMMM")
 
     TextConstants { id: textConstants }
 
@@ -23,7 +24,7 @@ Rectangle {
 
         function onLoginFailed() {
             passwordInput.text = ""
-            root.statusMessage = "Incorrect password. Please try again."
+            root.statusMessage = "Incorrect password"
             passwordInput.forceActiveFocus()
         }
 
@@ -32,159 +33,147 @@ Rectangle {
         }
     }
 
+    // Quiet, wallpaper-like background: no app-style login card.
     Rectangle {
-        width: 520
-        height: 520
-        radius: width / 2
-        color: accent
-        opacity: 0.055
-        anchors.centerIn: parent
+        anchors.fill: parent
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#11151d" }
+            GradientStop { position: 0.55; color: "#0b0d12" }
+            GradientStop { position: 1.0; color: "#08090c" }
+        }
     }
 
     Rectangle {
-        width: 420
-        height: 540
-        radius: 24
-        color: "#131316"
-        border.width: 1
-        border.color: "#29292f"
+        width: Math.min(root.width * 0.62, 820)
+        height: width
+        radius: width / 2
+        color: "#ff7a1a"
+        opacity: 0.035
+        x: root.width * 0.52
+        y: -height * 0.48
+    }
+
+    Rectangle {
+        width: Math.min(root.width * 0.42, 560)
+        height: width
+        radius: width / 2
+        color: "#547da8"
+        opacity: 0.045
+        x: -width * 0.28
+        y: root.height * 0.48
+    }
+
+    // Time and date are part of the desktop environment, not a login panel.
+    Column {
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        anchors.topMargin: Math.max(48, root.height * 0.105)
+        spacing: 7
+
+        Text {
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: root.clockText
+            color: "#f1f2f4"
+            font.pixelSize: Math.min(76, root.height * 0.105)
+            font.weight: Font.Light
+            font.letterSpacing: 1
+        }
+
+        Text {
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: root.dateText
+            color: "#9ba2ad"
+            font.pixelSize: 15
+            font.weight: Font.Normal
+        }
+    }
+
+    Column {
+        id: loginContent
+        width: Math.min(340, root.width * 0.78)
         anchors.centerIn: parent
-
-        Image {
-            id: magmaLogo
-            source: Qt.resolvedUrl("assets/magma-flame.png")
-            width: 76
-            height: 76
-            fillMode: Image.PreserveAspectFit
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: parent.top
-            anchors.topMargin: 34
-        }
-
-        Text {
-            text: "MAGMA"
-            color: "#f5f5f7"
-            font.pixelSize: 27
-            font.weight: Font.DemiBold
-            font.letterSpacing: 4
-            anchors.top: magmaLogo.bottom
-            anchors.topMargin: 10
-            anchors.horizontalCenter: parent.horizontalCenter
-        }
-
-        Text {
-            text: "Welcome back"
-            color: "#a5a5ad"
-            font.pixelSize: 14
-            anchors.top: parent.top
-            anchors.topMargin: 158
-            anchors.horizontalCenter: parent.horizontalCenter
-        }
-
-        Text {
-            text: "USERNAME"
-            color: "#a5a5ad"
-            font.pixelSize: 10
-            font.letterSpacing: 1.4
-            anchors.left: parent.left
-            anchors.leftMargin: 42
-            anchors.top: parent.top
-            anchors.topMargin: 202
-        }
+        anchors.verticalCenterOffset: root.height * 0.055
+        spacing: 0
 
         Rectangle {
-            id: usernameField
-            height: 46
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.leftMargin: 42
-            anchors.rightMargin: 42
-            anchors.top: parent.top
-            anchors.topMargin: 222
-            radius: 9
-            color: "#1c1c21"
-            border.width: userInput.activeFocus ? 1 : 0
-            border.color: accent
+            width: 76
+            height: 76
+            radius: 38
+            color: "#202630"
+            border.width: 1
+            border.color: "#343c48"
+            anchors.horizontalCenter: parent.horizontalCenter
 
-            TextInput {
-                id: userInput
-                anchors.fill: parent
-                anchors.leftMargin: 14
-                anchors.rightMargin: 14
-                verticalAlignment: TextInput.AlignVCenter
-                color: "#f5f5f7"
-                selectionColor: accent
-                selectedTextColor: "#0a0a0c"
-                font.pixelSize: 14
-                text: userModel.lastUser
-                selectByMouse: true
-                clip: true
-
-                Keys.onReturnPressed: passwordInput.forceActiveFocus()
-                Keys.onEnterPressed: passwordInput.forceActiveFocus()
-            }
-
-            Text {
-                anchors.left: parent.left
-                anchors.leftMargin: 14
-                anchors.verticalCenter: parent.verticalCenter
-                text: "Username"
-                color: "#777780"
-                font.pixelSize: 14
-                visible: userInput.text.length === 0
+            Image {
+                anchors.centerIn: parent
+                width: 43
+                height: 43
+                source: Qt.resolvedUrl("assets/magma-flame.png")
+                fillMode: Image.PreserveAspectFit
             }
         }
 
         Text {
-            text: "PASSWORD"
-            color: "#a5a5ad"
-            font.pixelSize: 10
-            font.letterSpacing: 1.4
-            anchors.left: parent.left
-            anchors.leftMargin: 42
-            anchors.top: parent.top
-            anchors.topMargin: 284
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.topMargin: 17
+            text: userModel.lastUser.length > 0 ? userModel.lastUser : "Welcome"
+            color: "#f1f2f4"
+            font.pixelSize: 23
+            font.weight: Font.Medium
         }
+
+        Text {
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.topMargin: 7
+            text: "Enter your password to unlock"
+            color: "#929aa6"
+            font.pixelSize: 13
+        }
+
+        Item { width: 1; height: 27 }
 
         Rectangle {
             id: passwordField
-            height: 46
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.leftMargin: 42
-            anchors.rightMargin: 42
-            anchors.top: parent.top
-            anchors.topMargin: 304
-            radius: 9
-            color: "#1c1c21"
-            border.width: passwordInput.activeFocus ? 1 : 0
-            border.color: accent
+            width: parent.width
+            height: 52
+            radius: 8
+            color: "#171c24"
+            border.width: passwordInput.activeFocus ? 1 : 1
+            border.color: passwordInput.activeFocus ? accent : "#343c48"
+
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.NoButton
+                hoverEnabled: true
+                cursorShape: Qt.IBeamCursor
+            }
 
             TextInput {
                 id: passwordInput
                 anchors.fill: parent
-                anchors.leftMargin: 14
-                anchors.rightMargin: 14
+                anchors.leftMargin: 17
+                anchors.rightMargin: 17
                 verticalAlignment: TextInput.AlignVCenter
-                color: "#f5f5f7"
+                color: "#f1f2f4"
                 selectionColor: accent
-                selectedTextColor: "#0a0a0c"
-                font.pixelSize: 14
+                selectedTextColor: "#111318"
+                font.pixelSize: 15
                 echoMode: TextInput.Password
                 passwordCharacter: "●"
                 selectByMouse: true
                 clip: true
+                focus: true
 
-                Keys.onReturnPressed: sddm.login(userInput.text, passwordInput.text, sessionIndex)
-                Keys.onEnterPressed: sddm.login(userInput.text, passwordInput.text, sessionIndex)
+                Keys.onReturnPressed: sddm.login(userModel.lastUser, passwordInput.text, sessionIndex)
+                Keys.onEnterPressed: sddm.login(userModel.lastUser, passwordInput.text, sessionIndex)
             }
 
             Text {
                 anchors.left: parent.left
-                anchors.leftMargin: 14
+                anchors.leftMargin: 17
                 anchors.verticalCenter: parent.verticalCenter
                 text: "Password"
-                color: "#777780"
+                color: "#747e8b"
                 font.pixelSize: 14
                 visible: passwordInput.text.length === 0
             }
@@ -192,36 +181,27 @@ Rectangle {
 
         Text {
             id: statusText
+            width: parent.width
+            anchors.topMargin: 12
             text: root.statusMessage
             color: "#ff9a62"
-            font.pixelSize: 11
-            wrapMode: Text.WordWrap
+            font.pixelSize: 12
             horizontalAlignment: Text.AlignHCenter
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.leftMargin: 36
-            anchors.rightMargin: 36
-            anchors.top: parent.top
-            anchors.topMargin: 358
             visible: text.length > 0
         }
 
         Rectangle {
             id: loginButton
+            width: parent.width
             height: 46
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.leftMargin: 42
-            anchors.rightMargin: 42
-            anchors.top: parent.top
-            anchors.topMargin: 388
-            radius: 9
+            radius: 8
             color: loginMouse.containsMouse ? "#ff8b35" : accent
+            anchors.topMargin: 18
 
             Text {
                 anchors.centerIn: parent
                 text: "Sign in"
-                color: "#0a0a0c"
+                color: "#111318"
                 font.pixelSize: 14
                 font.weight: Font.DemiBold
             }
@@ -230,19 +210,20 @@ Rectangle {
                 id: loginMouse
                 anchors.fill: parent
                 hoverEnabled: true
-                onClicked: sddm.login(userInput.text, passwordInput.text, sessionIndex)
+                cursorShape: Qt.PointingHandCursor
+                onClicked: sddm.login(userModel.lastUser, passwordInput.text, sessionIndex)
             }
         }
 
+        Item { width: 1; height: 24 }
+
         Row {
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: parent.top
-            anchors.topMargin: 454
-            spacing: 10
+            spacing: 12
 
             ComboBox {
                 id: sessionBox
-                width: 150
+                width: 170
                 height: 34
                 model: sessionModel
                 index: sessionModel.lastIndex
@@ -257,35 +238,27 @@ Rectangle {
                 font.pixelSize: 11
             }
         }
-
-        Text {
-            text: root.clockText
-            color: "#777780"
-            font.pixelSize: 10
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 18
-        }
     }
 
     Row {
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 24
-        spacing: 12
+        anchors.rightMargin: 34
+        anchors.bottomMargin: 28
+        spacing: 10
 
         Rectangle {
             width: 42
             height: 42
             radius: 21
-            color: shutdownMouse.containsMouse ? "#29292f" : "#17171b"
+            color: shutdownMouse.containsMouse ? "#29313c" : "#171c24"
             border.width: 1
-            border.color: "#29292f"
+            border.color: "#343c48"
 
             Text {
                 anchors.centerIn: parent
                 text: "⏻"
-                color: "#d8d8dc"
+                color: "#d9dde3"
                 font.pixelSize: 19
             }
 
@@ -293,6 +266,7 @@ Rectangle {
                 id: shutdownMouse
                 anchors.fill: parent
                 hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
                 onClicked: sddm.powerOff()
             }
         }
@@ -301,14 +275,14 @@ Rectangle {
             width: 42
             height: 42
             radius: 21
-            color: rebootMouse.containsMouse ? "#29292f" : "#17171b"
+            color: rebootMouse.containsMouse ? "#29313c" : "#171c24"
             border.width: 1
-            border.color: "#29292f"
+            border.color: "#343c48"
 
             Text {
                 anchors.centerIn: parent
                 text: "↻"
-                color: "#d8d8dc"
+                color: "#d9dde3"
                 font.pixelSize: 20
             }
 
@@ -316,22 +290,33 @@ Rectangle {
                 id: rebootMouse
                 anchors.fill: parent
                 hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
                 onClicked: sddm.reboot()
             }
         }
+    }
+
+    Text {
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.leftMargin: 30
+        anchors.bottomMargin: 37
+        text: "MAGMA LINUX"
+        color: "#68717e"
+        font.pixelSize: 11
+        font.letterSpacing: 2
+        font.weight: Font.DemiBold
     }
 
     Timer {
         interval: 1000
         running: true
         repeat: true
-        onTriggered: root.clockText = Qt.formatDateTime(new Date(), "ddd, dd MMM  •  HH:mm")
+        onTriggered: {
+            root.clockText = Qt.formatDateTime(new Date(), "HH:mm")
+            root.dateText = Qt.formatDateTime(new Date(), "dddd, d MMMM")
+        }
     }
 
-    Component.onCompleted: {
-        if (userInput.text.length === 0)
-            userInput.forceActiveFocus()
-        else
-            passwordInput.forceActiveFocus()
-    }
+    Component.onCompleted: passwordInput.forceActiveFocus()
 }
