@@ -8,6 +8,8 @@ Rectangle {
     color: "#090a0d"
 
     property int sessionIndex: sessionModel.lastIndex >= 0 ? sessionModel.lastIndex : 0
+    property string selectedUser: userModel.lastUser
+    property bool userListVisible: false
     property string statusMessage: ""
     property color accent: "#ff7a1a"
     property string clockText: Qt.formatDateTime(new Date(), "HH:mm")
@@ -113,10 +115,70 @@ Rectangle {
 
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
-            text: userModel.lastUser.length > 0 ? userModel.lastUser : "Welcome"
+            text: root.selectedUser.length > 0 ? root.selectedUser : "Choose a user"
             color: "#f1f2f4"
             font.pixelSize: 24
             font.weight: Font.Medium
+        }
+
+        Item { width: 1; height: 7 }
+
+        Item {
+            width: parent.width
+            height: 24
+
+            Text {
+                anchors.centerIn: parent
+                text: "List users  ▾"
+                color: "#aeb5c0"
+                font.pixelSize: 12
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: root.userListVisible = !root.userListVisible
+            }
+        }
+
+        Rectangle {
+            width: parent.width
+            height: root.userListVisible ? Math.min(150, userModel.count * 36) : 0
+            visible: root.userListVisible
+            color: "#171c24"
+            radius: 8
+            border.color: "#343c48"
+            clip: true
+
+            ListView {
+                anchors.fill: parent
+                model: userModel
+                delegate: Rectangle {
+                    width: ListView.view.width
+                    height: 36
+                    color: userRowMouse.containsMouse ? "#2b303a" : "transparent"
+                    Text {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: 14
+                        text: model.name
+                        color: "#e5e8ed"
+                        font.pixelSize: 13
+                    }
+                    MouseArea {
+                        id: userRowMouse
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: {
+                            root.selectedUser = model.name
+                            root.userListVisible = false
+                            passwordInput.text = ""
+                            passwordInput.forceActiveFocus()
+                        }
+                    }
+                }
+            }
         }
 
         Item { width: 1; height: 7 }
@@ -165,8 +227,8 @@ Rectangle {
                 clip: true
                 focus: true
 
-                Keys.onReturnPressed: sddm.login(userModel.lastUser, passwordInput.text, sessionIndex)
-                Keys.onEnterPressed: sddm.login(userModel.lastUser, passwordInput.text, sessionIndex)
+                Keys.onReturnPressed: sddm.login(root.selectedUser, passwordInput.text, sessionIndex)
+                Keys.onEnterPressed: sddm.login(root.selectedUser, passwordInput.text, sessionIndex)
             }
 
             Text {
@@ -221,7 +283,7 @@ Rectangle {
                     anchors.fill: parent
                     hoverEnabled: true
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: sddm.login(userModel.lastUser, passwordInput.text, sessionIndex)
+                    onClicked: sddm.login(root.selectedUser, passwordInput.text, sessionIndex)
                 }
             }
         }
@@ -245,6 +307,33 @@ Rectangle {
         anchors.rightMargin: 34
         anchors.bottomMargin: 28
         spacing: 10
+
+        Rectangle {
+            width: 44
+            height: 44
+            radius: 22
+            color: sleepMouse.containsMouse ? "#29313c" : "#171c24"
+            border.width: 1
+            border.color: "#3a4655"
+            opacity: sddm.canSuspend ? 1.0 : 0.4
+
+            Text {
+                anchors.centerIn: parent
+                text: "Zz"
+                color: "#d9dde3"
+                font.pixelSize: 15
+                font.weight: Font.Medium
+            }
+
+            MouseArea {
+                id: sleepMouse
+                anchors.fill: parent
+                enabled: sddm.canSuspend
+                hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
+                onClicked: sddm.suspend()
+            }
+        }
 
         Rectangle {
             width: 44
