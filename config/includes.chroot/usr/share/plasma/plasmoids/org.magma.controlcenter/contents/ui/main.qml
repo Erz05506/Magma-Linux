@@ -149,7 +149,6 @@ PlasmoidItem {
                                 width: 23
                                 height: 23
                                 source: "network-wireless"
-                                colorGroup: PlasmaCore.ColorScope
                             }
 
                             Controls.Label {
