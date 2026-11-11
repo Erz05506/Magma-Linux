@@ -46,7 +46,8 @@ for (const id of panelIds) {
         }
     }
 
-    dock.location = "floating";
+    dock.location = "bottom";
+    dock.floating = true;
     dock.alignment = "center";
     dock.lengthMode = "fit";
     dock.height = 64;
@@ -71,6 +72,7 @@ if (dock) {
     if (!topPanel) {
         topPanel = new Panel;
         topPanel.location = "top";
+    topPanel.floating = false;
     }
 
     const topTypes = [
