@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Magma Dock Setup
+Comment=Apply the default Magma Plasma panel layout
+Exec=/bin/sh /usr/share/magma/plasma/apply-dock.sh
+OnlyShowIn=KDE;
+NoDisplay=true
+X-KDE-autostart-phase=2
