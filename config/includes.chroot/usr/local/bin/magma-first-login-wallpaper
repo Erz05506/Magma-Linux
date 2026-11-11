@@ -1,0 +1,15 @@
+#!/bin/sh
+set -eu
+
+CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}"
+MARKER="$CONFIG_DIR/magma-wallpaper-initialized"
+WALLPAPER="/usr/share/backgrounds/magma-wallpapers.png"
+
+[ -e "$MARKER" ] && exit 0
+[ -s "$WALLPAPER" ] || exit 0
+
+if command -v plasma-apply-wallpaperimage >/dev/null 2>&1; then
+    plasma-apply-wallpaperimage "$WALLPAPER"
+    mkdir -p "$CONFIG_DIR"
+    : > "$MARKER"
+fi
