@@ -77,6 +77,7 @@ if (dock) {
     // Keep only the macOS-style status area and clock on the right.
     const statusTypes = [
         "org.kde.plasma.systemtray",
+        "org.magma.controlcenter",
         "org.kde.plasma.digitalclock"
     ];
     for (const widget of topPanel.widgets()) {
@@ -91,7 +92,7 @@ if (dock) {
         }
     }
 
-    // System tray first, date and time at the far right.
+    // System tray, Magma Control Center, then date and time.
     let statusIndex = 0;
     for (const type of statusTypes) {
         const widget = topPanel.widgets(type)[0];
