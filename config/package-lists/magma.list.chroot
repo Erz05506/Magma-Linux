@@ -1,6 +1,8 @@
 live-task-kde
 network-manager
 plasma-nm
+bluez
+qml6-module-org-kde-plasma-plasma5support
 sddm
 qt6-svg-plugins
 papirus-icon-theme
