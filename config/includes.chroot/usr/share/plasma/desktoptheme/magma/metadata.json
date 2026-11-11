@@ -1,0 +1,18 @@
+{
+  "KPlugin": {
+    "Authors": [
+      {
+        "Name": "Magma Studios"
+      }
+    ],
+    "Name": "Magma",
+    "Description": "Transparent macOS-inspired top bar and floating rounded application dock",
+    "Id": "magma",
+    "Version": "1.0",
+    "Category": "微",
+    "EnabledByDefault": true,
+    "License": "GPL-3.0-or-later",
+    "Website": "https://magmalinux.space/"
+  },
+  "X-Plasma-API": "5.0"
+}
