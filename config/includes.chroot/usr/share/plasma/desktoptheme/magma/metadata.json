@@ -9,7 +9,7 @@
     "Description": "Transparent macOS-inspired top bar and floating rounded application dock",
     "Id": "magma",
     "Version": "1.0",
-    "Category": "微",
+    "Category": "Plasma Style",
     "EnabledByDefault": true,
     "License": "GPL-3.0-or-later",
     "Website": "https://magmalinux.space/"
