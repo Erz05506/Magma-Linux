@@ -1,4 +1,4 @@
-// Magma Linux Plasma 6: compact application dock and top system area.
+// Magma Linux Plasma 6: compact application dock and macOS-style status area.
 let dock = null;
 
 for (const id of panelIds) {
@@ -72,17 +72,31 @@ if (dock) {
     if (!topPanel) {
         topPanel = new Panel;
         topPanel.location = "top";
-    topPanel.floating = false;
     }
 
-    const topTypes = [
-        "org.kde.plasma.digitalclock",
+    // Keep only the macOS-style status area and clock on the right.
+    const statusTypes = [
         "org.kde.plasma.systemtray",
-        "org.kde.plasma.lock_logout"
+        "org.kde.plasma.digitalclock"
     ];
-    for (const type of topTypes) {
+    for (const widget of topPanel.widgets()) {
+        if (!statusTypes.includes(widget.type)) {
+            widget.remove();
+        }
+    }
+
+    for (const type of statusTypes) {
         if (topPanel.widgets(type).length === 0) {
             topPanel.addWidget(type);
+        }
+    }
+
+    // System tray first, date and time at the far right.
+    let statusIndex = 0;
+    for (const type of statusTypes) {
+        const widget = topPanel.widgets(type)[0];
+        if (widget) {
+            widget.index = statusIndex++;
         }
     }
 
@@ -90,16 +104,12 @@ if (dock) {
     topPanel.alignment = "right";
     topPanel.lengthMode = "fit";
     topPanel.height = 30;
-    // Reserve the top strip like macOS: maximized windows start below it.
-    // "windowsgobelow" lets maximized windows extend behind the panel.
-    topPanel.hiding = "none";
     topPanel.offset = 8;
-
-    // Keep the system controls visually light; applets that support this
-    // hint will not draw their own individual backgrounds.
-    for (const widget of topPanel.widgets()) {
-        widget.userBackgroundHints = "none";
-    }
+    topPanel.hiding = "none";
+    // A small floating glass-like capsule keeps the icons legible over any wallpaper
+    // without adding a full-width opaque strip across the desktop.
+    topPanel.floating = true;
     topPanel.locked = true;
-    print("Magma top system area configured");
+
+    print("Magma macOS-style top status area configured");
 }
