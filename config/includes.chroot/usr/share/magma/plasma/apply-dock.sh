@@ -3,6 +3,11 @@ set -eu
 
 SCRIPT="/usr/share/magma/plasma/magma-dock.js"
 [ -s "$SCRIPT" ] || exit 0
+# Apply the custom panel style when the theme is installed.
+if command -v plasma-apply-desktoptheme >/dev/null 2>&1; then
+    plasma-apply-desktoptheme magma >/dev/null 2>&1 || true
+fi
+
 command -v dbus-send >/dev/null 2>&1 || exit 0
 
 # Wait briefly for the Plasma D-Bus service after login.
