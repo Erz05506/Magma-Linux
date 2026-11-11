@@ -49,7 +49,7 @@ for (const id of panelIds) {
     dock.location = "floating";
     dock.alignment = "center";
     dock.lengthMode = "fit";
-    dock.height = 58;
+    dock.height = 64;
     dock.hiding = "none";
     dock.offset = 0;
     dock.locked = true;
@@ -87,9 +87,15 @@ if (dock) {
     topPanel.location = "top";
     topPanel.alignment = "right";
     topPanel.lengthMode = "fit";
-    topPanel.height = 40;
-    topPanel.hiding = "none";
-    topPanel.offset = 12;
+    topPanel.height = 30;
+    topPanel.hiding = "windowsgobelow";
+    topPanel.offset = 8;
+
+    // Keep the system controls visually light; applets that support this
+    // hint will not draw their own individual backgrounds.
+    for (const widget of topPanel.widgets()) {
+        widget.userBackgroundHints = "none";
+    }
     topPanel.locked = true;
     print("Magma top system area configured");
 }
