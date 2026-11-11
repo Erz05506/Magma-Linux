@@ -3,13 +3,15 @@ set -eu
 
 THEME_DIR="/usr/share/sddm/themes/magma-sddm"
 LOGO_URL="https://raw.githubusercontent.com/Erz05506/Magma-Linux/main/branding/logos/magma-flame.png"
+WALLPAPER_URL="https://raw.githubusercontent.com/Erz05506/Magma-Linux/main/branding/wallpapers/magma-wallpapers.png"
+WALLPAPER_DIR="/usr/share/backgrounds"
 
 if [ ! -f "$THEME_DIR/Main.qml" ] || [ ! -f "$THEME_DIR/metadata.desktop" ]; then
     echo "Magma SDDM: custom theme files are missing." >&2
     exit 1
 fi
 
-install -d "$THEME_DIR/assets"
+install -d "$THEME_DIR/assets" "$WALLPAPER_DIR"
 
 if curl --fail --location --silent --show-error --retry 3 --connect-timeout 10 --max-time 60 "$LOGO_URL" -o "$THEME_DIR/assets/magma-flame.png.tmp"; then
     if [ -s "$THEME_DIR/assets/magma-flame.png.tmp" ]; then
@@ -24,7 +26,21 @@ else
     echo "Magma SDDM: logo download failed; continuing without the logo." >&2
 fi
 
-chmod 644 "$THEME_DIR/Main.qml" "$THEME_DIR/theme.conf" "$THEME_DIR/metadata.desktop"
+if ! curl --fail --location --silent --show-error --retry 3 --connect-timeout 10 --max-time 60 "$WALLPAPER_URL" -o "$WALLPAPER_DIR/magma-wallpapers.png.tmp"; then
+    rm -f "$WALLPAPER_DIR/magma-wallpapers.png.tmp"
+    echo "Magma Desktop: wallpaper download failed." >&2
+    exit 1
+fi
+
+if [ ! -s "$WALLPAPER_DIR/magma-wallpapers.png.tmp" ]; then
+    rm -f "$WALLPAPER_DIR/magma-wallpapers.png.tmp"
+    echo "Magma Desktop: downloaded wallpaper is empty." >&2
+    exit 1
+fi
+
+mv "$WALLPAPER_DIR/magma-wallpapers.png.tmp" "$WALLPAPER_DIR/magma-wallpapers.png"
+chmod 644 "$WALLPAPER_DIR/magma-wallpapers.png" "$THEME_DIR/Main.qml" "$THEME_DIR/theme.conf" "$THEME_DIR/metadata.desktop"
+
 if [ -f "$THEME_DIR/assets/magma-flame.png" ]; then
     chmod 644 "$THEME_DIR/assets/magma-flame.png"
 fi
