@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Magma First Login Setup
+Comment=Apply the default Magma desktop wallpaper once
+Exec=/bin/sh /usr/local/bin/magma-first-login-wallpaper
+OnlyShowIn=KDE;
+NoDisplay=true
+X-KDE-autostart-phase=2
