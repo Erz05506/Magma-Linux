@@ -88,7 +88,9 @@ if (dock) {
     topPanel.alignment = "right";
     topPanel.lengthMode = "fit";
     topPanel.height = 30;
-    topPanel.hiding = "windowsgobelow";
+    // Reserve the top strip like macOS: maximized windows start below it.
+    // "windowsgobelow" lets maximized windows extend behind the panel.
+    topPanel.hiding = "none";
     topPanel.offset = 8;
 
     // Keep the system controls visually light; applets that support this
