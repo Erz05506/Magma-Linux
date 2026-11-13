@@ -8,49 +8,36 @@ for (const id of panelIds) {
     }
 
     const widgets = panel.widgets();
-    let hasLauncher = false;
+    let hasTaskManager = false;
     for (const widget of widgets) {
-        if (widget.type === "org.kde.plasma.kickoff") {
-            hasLauncher = true;
+        if (widget.type === "org.kde.plasma.icontasks") {
+            hasTaskManager = true;
             break;
         }
     }
-    if (!hasLauncher) {
+    if (!hasTaskManager) {
         continue;
     }
 
     dock = panel;
 
-    // The dock is for applications only; system controls live at the top.
+    // The bottom dock contains application launchers only.
     for (const widget of panel.widgets()) {
-        if ([
-            "org.kde.plasma.pager",
-            "org.kde.plasma.showdesktop",
-            "org.kde.plasma.marginsseparator",
-            "org.kde.plasma.systemtray",
-            "org.kde.plasma.digitalclock"
-        ].includes(widget.type)) {
+        if (widget.type !== "org.kde.plasma.icontasks") {
             widget.remove();
         }
     }
 
-    const dockOrder = [
-        "org.kde.plasma.kickoff",
-        "org.kde.plasma.icontasks"
-    ];
-    let dockIndex = 0;
-    for (const type of dockOrder) {
-        const widget = dock.widgets(type)[0];
-        if (widget) {
-            widget.index = dockIndex++;
-        }
+    const taskManager = dock.widgets("org.kde.plasma.icontasks")[0];
+    if (taskManager) {
+        taskManager.index = 0;
     }
 
     dock.location = "bottom";
     dock.floating = true;
     dock.alignment = "center";
     dock.lengthMode = "fit";
-    dock.height = 64;
+    dock.height = 68;
     dock.hiding = "none";
     dock.offset = 0;
     dock.locked = true;
