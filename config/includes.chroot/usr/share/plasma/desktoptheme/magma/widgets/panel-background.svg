@@ -20,15 +20,15 @@
   <g id="north-bottomleft"><rect x="0" y="56" width="8" height="8" fill="#000000" fill-opacity="0"/></g>
   <g id="north-bottomright"><rect x="56" y="56" width="8" height="8" fill="#000000" fill-opacity="0"/></g>
 
-  <g id="floating-center"><rect x="8" y="8" width="48" height="48" fill="#151519" fill-opacity="0.94"/></g>
-  <g id="floating-top"><rect x="8" y="0" width="48" height="8" fill="#151519" fill-opacity="0.94"/></g>
-  <g id="floating-bottom"><rect x="8" y="56" width="48" height="8" fill="#151519" fill-opacity="0.94"/></g>
-  <g id="floating-left"><rect x="0" y="8" width="8" height="48" fill="#151519" fill-opacity="0.94"/></g>
-  <g id="floating-right"><rect x="56" y="8" width="8" height="48" fill="#151519" fill-opacity="0.94"/></g>
-  <g id="floating-topleft"><path d="M8 0 A8 8 0 0 0 0 8 L8 8 Z" fill="#151519" fill-opacity="0.94"/></g>
-  <g id="floating-topright"><path d="M56 0 A8 8 0 0 1 64 8 L56 8 Z" fill="#151519" fill-opacity="0.94"/></g>
-  <g id="floating-bottomleft"><path d="M0 56 A8 8 0 0 0 8 64 L8 56 Z" fill="#151519" fill-opacity="0.94"/></g>
-  <g id="floating-bottomright"><path d="M64 56 A8 8 0 0 1 56 64 L56 56 Z" fill="#151519" fill-opacity="0.94"/></g>
+  <g id="floating-center"><rect x="8" y="8" width="48" height="48" fill="#151519" fill-opacity="1.0"/></g>
+  <g id="floating-top"><rect x="8" y="0" width="48" height="8" fill="#151519" fill-opacity="1.0"/></g>
+  <g id="floating-bottom"><rect x="8" y="56" width="48" height="8" fill="#151519" fill-opacity="1.0"/></g>
+  <g id="floating-left"><rect x="0" y="8" width="8" height="48" fill="#151519" fill-opacity="1.0"/></g>
+  <g id="floating-right"><rect x="56" y="8" width="8" height="48" fill="#151519" fill-opacity="1.0"/></g>
+  <g id="floating-topleft"><path d="M8 0 A8 8 0 0 0 0 8 L8 8 Z" fill="#151519" fill-opacity="1.0"/></g>
+  <g id="floating-topright"><path d="M56 0 A8 8 0 0 1 64 8 L56 8 Z" fill="#151519" fill-opacity="1.0"/></g>
+  <g id="floating-bottomleft"><path d="M0 56 A8 8 0 0 0 8 64 L8 56 Z" fill="#151519" fill-opacity="1.0"/></g>
+  <g id="floating-bottomright"><path d="M64 56 A8 8 0 0 1 56 64 L56 56 Z" fill="#151519" fill-opacity="1.0"/></g>
 
   <g id="floating-hint-top-margin"><rect x="0" y="0" width="64" height="8" fill="#000000" fill-opacity="0"/></g>
   <g id="floating-hint-bottom-margin"><rect x="0" y="56" width="64" height="8" fill="#000000" fill-opacity="0"/></g>
