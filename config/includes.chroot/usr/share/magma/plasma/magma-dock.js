@@ -34,7 +34,8 @@ for (const id of panelIds) {
     }
 
     dock.location = "bottom";
-    dock.floating = true;
+    // A non-floating panel reserves desktop space so windows never sit behind the dock.
+    dock.floating = false;
     dock.alignment = "center";
     dock.lengthMode = "fit";
     dock.height = 68;
