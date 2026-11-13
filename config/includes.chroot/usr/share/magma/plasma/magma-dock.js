@@ -80,20 +80,30 @@ if (dock) {
         "org.magma.controlcenter",
         "org.kde.plasma.digitalclock"
     ];
+    const spacerType = "org.kde.plasma.panelspacer";
     for (const widget of topPanel.widgets()) {
-        if (!statusTypes.includes(widget.type)) {
+        if (!statusTypes.includes(widget.type) && widget.type !== spacerType) {
             widget.remove();
         }
     }
 
+    if (topPanel.widgets(spacerType).length === 0) {
+        topPanel.addWidget(spacerType);
+    }
     for (const type of statusTypes) {
         if (topPanel.widgets(type).length === 0) {
             topPanel.addWidget(type);
         }
     }
 
+    // The flexible spacer pushes the complete status group to the right edge.
+    const spacer = topPanel.widgets(spacerType)[0];
+    if (spacer) {
+        spacer.index = 0;
+    }
+
     // System tray, Magma Control Center, then date and time.
-    let statusIndex = 0;
+    let statusIndex = 1;
     for (const type of statusTypes) {
         const widget = topPanel.widgets(type)[0];
         if (widget) {
