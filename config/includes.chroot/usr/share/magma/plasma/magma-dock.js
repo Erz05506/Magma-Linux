@@ -102,14 +102,16 @@ if (dock) {
     }
 
     topPanel.location = "top";
+    // Match the macOS status-bar layout: reserve a full-width strip at the
+    // screen edge, but keep every widget grouped on the right.
     topPanel.alignment = "right";
-    topPanel.lengthMode = "fit";
-    topPanel.height = 30;
-    topPanel.offset = 8;
+    topPanel.lengthMode = "fill";
+    topPanel.height = 28;
+    topPanel.offset = 0;
     topPanel.hiding = "none";
-    // A small floating glass-like capsule keeps the icons legible over any wallpaper
-    // without adding a full-width opaque strip across the desktop.
-    topPanel.floating = true;
+    // A docked panel reserves screen space, so maximized windows do not
+    // render underneath it. The Magma color scheme supplies light text/icons.
+    topPanel.floating = false;
     topPanel.locked = true;
 
     print("Magma macOS-style top status area configured");
